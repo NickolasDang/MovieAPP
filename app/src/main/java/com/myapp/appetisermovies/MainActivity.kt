@@ -3,14 +3,18 @@ package com.myapp.appetisermovies
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.safeContent
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.myapp.appetisermovies.ui.theme.AppetiserMoviesTheme
+import com.feature.movie_list.presentation.composable.MovieListScreen
+import com.core.ui.theme.AppetiserMoviesTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,13 +22,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AppetiserMoviesTheme {
+            com.core.ui.theme.AppetiserMoviesTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .windowInsetsPadding(WindowInsets.safeContent),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    MovieListScreen()
                 }
             }
         }
@@ -42,7 +48,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    AppetiserMoviesTheme {
+    com.core.ui.theme.AppetiserMoviesTheme {
         Greeting("Android")
     }
 }

@@ -15,4 +15,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "AppetiserMovies"
 include(":app")
- 
+include(":data:network")
+include(":feature:movie_list")
+include(":core:ui")
