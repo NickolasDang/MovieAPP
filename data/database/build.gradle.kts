@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.feature.movie_list"
+    namespace = "com.data.database"
     compileSdk = 34
 
     defaultConfig {
@@ -29,21 +29,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_18
         targetCompatibility = JavaVersion.VERSION_18
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
-    }
     kotlinOptions {
         jvmTarget = "18"
     }
 }
 
 dependencies {
-    implementation(project(":data:network"))
-    implementation(project(":data:database"))
-    implementation(project(":core:ui"))
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -52,7 +43,6 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
+    room()
     hilt()
-    compose()
-    lifecycle()
 }

@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.core.ui.theme.Grey50
 import com.core.ui.theme.Grey60
+import com.feature.movie_list.R
 import com.feature.movie_list.domain.Movie
 
 @Composable
@@ -66,7 +67,8 @@ fun MovieListIem(
                 modifier = Modifier
                     .height(120.dp)
                     .width(80.dp),
-                alignment = Alignment.CenterStart
+                alignment = Alignment.CenterStart,
+                error = painterResource(id = R.drawable.placeholder)
             )
         }
 

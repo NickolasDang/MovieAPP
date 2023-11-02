@@ -54,10 +54,9 @@ fun MovieListScreen(
                 movieListUiState.errorMessage.isNotBlank() -> {
 
                 }
-                movieListUiState.movieList.isNotEmpty() -> {
-                    MovieList(movieList = movieListUiState.movieList)
-                }
             }
+
+            MovieList(movieList = movieListUiState.movieList)
         }
     }
 }
