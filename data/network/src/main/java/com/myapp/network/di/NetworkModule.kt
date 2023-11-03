@@ -1,7 +1,7 @@
 package com.myapp.network.di
 
-import com.myapp.network.api.ITunesApiService
 import com.myapp.network.NetworkConstants
+import com.myapp.network.api.ITunesApiService
 import com.myapp.network.api.OmdbApiService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -11,10 +11,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.create
 import javax.inject.Singleton
 
-@Module
+@Module(includes = [NetworkBinderModule::class])
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 

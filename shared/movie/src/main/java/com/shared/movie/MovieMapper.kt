@@ -36,6 +36,18 @@ fun ITunesResponse.toMovieEntityList() =
         iTunesItemResponse.toMovieEntity()
     }
 
+fun Movie.toItunesItemResponse() = ITunesItemResponse(
+    trackId = this.id,
+    trackName = this.title,
+    artworkUrl100 = this.imgUrl,
+    previewUrl = this.trailerUrl,
+    trackPrice = this.price,
+    primaryGenreName = this.genre,
+    longDescription = this.description
+)
+fun List<Movie>.toItunesItemResponseList() =
+    this.map { movie -> movie.toItunesItemResponse() }
+
 fun MovieEntity.toMovie() = Movie(
     id = this.id,
     description = this.description,
@@ -62,3 +74,8 @@ fun Movie.toMovieEntity() = MovieEntity(
     trailerUrl = this.trailerUrl,
     title = this.title
 )
+
+fun List<Movie>.toMovieEntityList() =
+    this.map { movie ->
+        movie.toMovieEntity()
+    }

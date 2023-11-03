@@ -6,7 +6,7 @@ import com.data.database.dao.MovieDao
 import com.feature.movie_detail.domain.MovieDetailRepository
 import com.feature.movie_detail.domain.Poster
 import com.feature.movie_detail.domain.toPoster
-import com.myapp.network.data_source.PosterRemoteDataSource
+import com.myapp.network.data_source.PosterRemoteDataSourceImpl
 import com.shared.movie.Movie
 import com.shared.movie.toMovie
 import kotlinx.coroutines.CoroutineDispatcher
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 class MovieDetailRepositoryImpl @Inject constructor(
     private val movieDao: MovieDao,
-    private val posterRemoteDataSource: PosterRemoteDataSource,
+    private val posterRemoteDataSource: PosterRemoteDataSourceImpl,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : MovieDetailRepository {
 

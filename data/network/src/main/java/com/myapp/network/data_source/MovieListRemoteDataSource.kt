@@ -1,11 +1,7 @@
 package com.myapp.network.data_source
 
-import com.myapp.network.api.ITunesApiService
-import javax.inject.Inject
+import com.myapp.network.model.ITunesResponse
 
-class MovieListRemoteDataSource @Inject constructor(
-    private val iTunesApiService: ITunesApiService
-) {
-    suspend fun getMovieList(input: String) =
-        iTunesApiService.getMovieList(input, media = "movie")
+interface MovieListRemoteDataSource {
+    suspend fun getMovieList(input: String): ITunesResponse
 }

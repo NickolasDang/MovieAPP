@@ -31,6 +31,10 @@ object Dependencies {
     const val lifecycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
     const val lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}"
     const val lifecycleComposeViewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.lifecycle}"
+
+    const val mockito = "org.mockito:mockito-core:${Versions.mockito}"
+    const val junit = "junit:junit:${Versions.junit}"
+    const val coroutineTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutineTest}"
 }
 
 fun DependencyHandler.room() {
@@ -72,4 +76,10 @@ fun DependencyHandler.lifecycle() {
 fun DependencyHandler.coil() {
     implementation(Dependencies.coil)
     implementation(Dependencies.coilVideo)
+}
+
+fun DependencyHandler.unitTest() {
+    testImplementation(Dependencies.junit)
+    testImplementation(Dependencies.mockito)
+    testImplementation(Dependencies.coroutineTest)
 }

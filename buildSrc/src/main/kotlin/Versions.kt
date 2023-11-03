@@ -11,4 +11,7 @@ object Versions {
     const val room = "2.5.0"
     const val lifecycle = "2.6.1"
     const val coil = "2.5.0"
+    const val mockito = "4.4.0"
+    const val junit = "4.13.2"
+    const val coroutineTest = "1.7.3"
 }

@@ -1,16 +1,8 @@
 package com.myapp.network.data_source
 
-import com.myapp.network.NetworkConstants
-import com.myapp.network.api.OmdbApiService
-import javax.inject.Inject
+import com.myapp.network.model.PosterResponse
 
-class PosterRemoteDataSource @Inject constructor(
-    private val omdbApiService: OmdbApiService
-) {
+interface PosterRemoteDataSource {
 
-    suspend fun getPoster(movieTitle: String) =
-        omdbApiService.getPoster(
-            apiKey = NetworkConstants.OMBD_API_KEY,
-            movieTitle = movieTitle
-        )
+    suspend fun getPoster(movieTitle: String): PosterResponse
 }
