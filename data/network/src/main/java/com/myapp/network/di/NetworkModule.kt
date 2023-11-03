@@ -1,7 +1,8 @@
 package com.myapp.network.di
 
-import com.myapp.network.ITunesApiService
-import com.myapp.network.ITunesConstants
+import com.myapp.network.NetworkConstants
+import com.myapp.network.api.ITunesApiService
+import com.myapp.network.api.OmdbApiService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -12,7 +13,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
-@Module
+@Module(includes = [NetworkBinderModule::class])
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
@@ -25,14 +26,29 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(moshi: Moshi): Retrofit =
+    @Movie
+    fun provideRetrofitMovie(moshi: Moshi): Retrofit =
         Retrofit.Builder()
-            .baseUrl(ITunesConstants.BASE_URL)
+            .baseUrl(NetworkConstants.ITUNES_BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
 
     @Provides
     @Singleton
-    fun provideITunesApiService(retrofit: Retrofit): ITunesApiService =
+    @Poster
+    fun provideRetrofitPoster(moshi: Moshi): Retrofit =
+        Retrofit.Builder()
+            .baseUrl(NetworkConstants.OMBD_BASE_URL)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .build()
+
+    @Provides
+    @Singleton
+    fun provideITunesApiService(@Movie retrofit: Retrofit): ITunesApiService =
         retrofit.create(ITunesApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideOmdbApiService(@Poster retrofit: Retrofit): OmdbApiService =
+        retrofit.create(OmdbApiService::class.java)
 }
