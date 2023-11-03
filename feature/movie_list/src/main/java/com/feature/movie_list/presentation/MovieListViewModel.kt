@@ -3,7 +3,7 @@ package com.feature.movie_list.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.feature.movie_list.domain.MovieRepository
-import com.myapp.network.model.Resource
+import com.core.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

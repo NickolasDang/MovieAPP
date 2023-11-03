@@ -1,6 +1,6 @@
 package com.feature.movie_list.presentation
 
-import com.feature.movie_list.domain.Movie
+import com.shared.movie.Movie
 
 data class MovieListUiState(
     val isLoading: Boolean = false,

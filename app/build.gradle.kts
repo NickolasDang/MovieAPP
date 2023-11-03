@@ -55,6 +55,7 @@ android {
 
 dependencies {
     implementation(project(":feature:movie_list"))
+    implementation(project(":feature:movie_detail"))
     implementation(project(":core:ui"))
 
     implementation("androidx.core:core-ktx:1.9.0")

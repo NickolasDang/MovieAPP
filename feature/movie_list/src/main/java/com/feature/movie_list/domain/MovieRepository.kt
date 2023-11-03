@@ -1,6 +1,7 @@
 package com.feature.movie_list.domain
 
-import com.myapp.network.model.Resource
+import com.core.util.Resource
+import com.shared.movie.Movie
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {

@@ -44,6 +44,8 @@ dependencies {
     implementation(project(":data:network"))
     implementation(project(":data:database"))
     implementation(project(":core:ui"))
+    implementation(project(":core:util"))
+    implementation(project(":shared:movie"))
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -55,4 +57,5 @@ dependencies {
     hilt()
     compose()
     lifecycle()
+    coil()
 }

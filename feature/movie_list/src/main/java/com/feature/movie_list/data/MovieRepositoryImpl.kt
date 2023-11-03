@@ -1,12 +1,16 @@
 package com.feature.movie_list.data
 
 import coil.network.HttpException
+import com.core.util.IoDispatcher
 import com.data.database.dao.MovieDao
-import com.feature.movie_list.domain.Movie
 import com.feature.movie_list.domain.MovieRepository
-import com.myapp.network.MovieListRemoteDataSource
-import com.myapp.network.di.IoDispatcher
-import com.myapp.network.model.Resource
+import com.myapp.network.data_source.MovieListRemoteDataSource
+import com.core.util.Resource
+import com.shared.movie.Movie
+import com.shared.movie.toMovie
+import com.shared.movie.toMovieEntity
+import com.shared.movie.toMovieEntityList
+import com.shared.movie.toMovieList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -36,12 +40,14 @@ class MovieRepositoryImpl @Inject constructor(
                 val newCachedMovieList = movieDao.getAllMovies().map { it.toMovie() }
                 emit(Resource.Success(newCachedMovieList))
             } catch (e: HttpException) {
-                emit(Resource.Error(
+                emit(
+                    Resource.Error(
                     errorMessage = "Something went wrong",
                     data = cachedMovieList
                 ))
             } catch (e: IOException) {
-                emit(Resource.Error(
+                emit(
+                    Resource.Error(
                     errorMessage = "Couldn't reach the server, check your internet connection",
                     data = cachedMovieList
                 ))
