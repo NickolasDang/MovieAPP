@@ -1,9 +1,11 @@
 package com.feature.movie_list.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.feature.movie_list.domain.MovieRepository
 import com.core.util.Resource
+import com.shared.movie.Movie
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,6 +29,18 @@ class MovieListViewModel @Inject constructor(
 
     init {
         getMovieListFromCache()
+    }
+
+    fun toggleFavorite(movie: Movie) {
+        viewModelScope.launch {
+            try {
+                movieRepository.toggleFavorite(movie.id, !movie.isFavorite)
+                getMovieListFromCache()
+            } catch (e: Exception) {
+                Log.d("ERROR", e.localizedMessage)
+                _state.value = MovieListUiState(errorMessage = "Something went wrong")
+            }
+        }
     }
 
     fun searchMovie(input: String) {
@@ -61,7 +75,7 @@ class MovieListViewModel @Inject constructor(
             }.launchIn(viewModelScope)
     }
 
-    private fun getMovieListFromCache() {
+    fun getMovieListFromCache() {
         viewModelScope.launch {
             _state.value = MovieListUiState(
                 movieList = movieRepository.getMovieListFromCache()

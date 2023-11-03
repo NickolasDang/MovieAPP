@@ -33,12 +33,17 @@ import com.shared.movie.Movie
 @Composable
 fun MovieList(
     movieList: List<Movie>,
-    onItemClicked: (Int) -> Unit
+    onItemClicked: (Int) -> Unit,
+    onToggleFavorite: (Movie) -> Unit
 ) {
     
     LazyColumn() {
         items(movieList) {movie ->
-            MovieListIem(movie = movie, onItemClicked = onItemClicked)
+            MovieListIem(
+                movie = movie,
+                onItemClicked = onItemClicked,
+                onToggleFavorite = { onToggleFavorite(it) }
+            )
         }
     }
 }
@@ -46,7 +51,8 @@ fun MovieList(
 @Composable
 fun MovieListIem(
     movie: Movie,
-    onItemClicked: (Int) -> Unit
+    onItemClicked: (Int) -> Unit,
+    onToggleFavorite: (Movie) -> Unit
 ) {
     Row (
         modifier = Modifier
@@ -65,7 +71,7 @@ fun MovieListIem(
                     .height(120.dp)
                     .width(80.dp),
                 alignment = Alignment.CenterStart,
-                error = painterResource(id = R.drawable.placeholder)
+                error = painterResource(id = com.core.ui.R.drawable.placeholder)
             )
         }
 
@@ -92,7 +98,7 @@ fun MovieListIem(
 
         FavoriteButton(
             isFavorite = movie.isFavorite,
-            onClick = { /*TODO*/ },
+            onClick = { onToggleFavorite(movie) },
             modifier = Modifier.size(20.dp)
         )
     }

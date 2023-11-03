@@ -13,11 +13,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
@@ -44,64 +50,79 @@ fun MovieDetailScreen(
     val movieDetailUiState by viewModel.state.collectAsState()
     val poster by viewModel.poster.collectAsState()
 
+    val snackbarHostState by remember { mutableStateOf(SnackbarHostState()) }
+
+    LaunchedEffect(movieDetailUiState.errorMessage) {
+        if (movieDetailUiState.errorMessage.isNotBlank()) {
+            snackbarHostState.showSnackbar(message = movieDetailUiState.errorMessage)
+        }
+    }
+
     viewModel.getMovieDetails(movieId)
 
-    Surface(
-        modifier = modifier.fillMaxSize()
-    ) {
-        when {
-            movieDetailUiState.isLoading -> {
-                Loader()
-            }
-            movieDetailUiState.errorMessage.isNotBlank() -> {
-                Text(text = movieDetailUiState.errorMessage)
-            }
-            movieDetailUiState.movie != null -> {
-                movieDetailUiState.movie?.let { movie ->
-                    Column(
-                        modifier = modifier
-                            .fillMaxSize()
-                            .verticalScroll(rememberScrollState()),
-                    ) {
-                        Box {
-                            MoviePoster(posterUrl = poster.posterUrl)
-                            HeaderButtons(
-                                movie = movie,
-                                onBackButtonClicked = { onGoBack() },
-                                onFavoriteButtonClicked = {}
-                            )
-                        }
+    Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+    ) { innerPadding ->
 
-                        Column (
-                            modifier = Modifier.padding(horizontal = 26.dp, vertical = 12.dp),
+        Surface(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+            when {
+                movieDetailUiState.isLoading -> {
+                    Loader()
+                }
+                movieDetailUiState.errorMessage.isNotBlank() -> {
+                    Text(text = movieDetailUiState.errorMessage)
+                }
+                movieDetailUiState.movie != null -> {
+                    movieDetailUiState.movie?.let { movie ->
+                        Column(
+                            modifier = modifier
+                                .fillMaxSize()
+                                .verticalScroll(rememberScrollState()),
                         ) {
-                            Row (
-                                Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    text = "Genres: ${movie.genre}",
-                                    style = MaterialTheme.typography.labelMedium
+                            Box {
+                                MoviePoster(posterUrl = poster.posterUrl)
+                                HeaderButtons(
+                                    movie = movie,
+                                    onBackButtonClicked = { onGoBack() },
+                                    onFavoriteButtonClicked = { viewModel.toggleFavorite(it) }
                                 )
-
-                               PriceTag(price = movie.price.toString())
                             }
 
-                            Spacer(modifier = Modifier.height(28.dp))
+                            Column (
+                                modifier = Modifier.padding(horizontal = 26.dp, vertical = 12.dp),
+                            ) {
+                                Row (
+                                    Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = "Genres: ${movie.genre}",
+                                        style = MaterialTheme.typography.labelMedium
+                                    )
 
-                            Text(
-                                text = movie.title,
-                                style = MaterialTheme.typography.titleLarge
-                            )
+                                    PriceTag(price = movie.price.toString())
+                                }
 
-                            Spacer(modifier = Modifier.height(10.dp))
+                                Spacer(modifier = Modifier.height(28.dp))
 
-                            Text(
-                                text = movie.description,
-                                color = Grey60
-                            )
+                                Text(
+                                    text = movie.title,
+                                    style = MaterialTheme.typography.titleLarge
+                                )
 
+                                Spacer(modifier = Modifier.height(10.dp))
+
+                                Text(
+                                    text = movie.description,
+                                    color = Grey60
+                                )
+
+                            }
                         }
                     }
                 }
@@ -115,7 +136,7 @@ fun MovieDetailScreen(
 fun HeaderButtons(
     movie: Movie,
     onBackButtonClicked: () -> Unit,
-    onFavoriteButtonClicked: () -> Unit,
+    onFavoriteButtonClicked: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row (
@@ -127,6 +148,9 @@ fun HeaderButtons(
     ) {
         BackButton(onClick = { onBackButtonClicked() })
 
-        FavoriteButton(isFavorite = movie.isFavorite, onClick = { onFavoriteButtonClicked() })
+        FavoriteButton(
+            isFavorite = movie.isFavorite,
+            onClick = { onFavoriteButtonClicked(!movie.isFavorite) }
+        )
     }
 }

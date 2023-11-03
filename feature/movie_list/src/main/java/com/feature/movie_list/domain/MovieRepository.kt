@@ -9,4 +9,6 @@ interface MovieRepository {
     fun getMovieList(input: String): Flow<Resource<List<Movie>>>
 
     suspend fun getMovieListFromCache(): List<Movie>
+
+    suspend fun toggleFavorite(movieId: Int, isFavorite: Boolean)
 }

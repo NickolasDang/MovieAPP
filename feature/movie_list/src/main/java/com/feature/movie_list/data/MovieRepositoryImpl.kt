@@ -6,6 +6,7 @@ import com.data.database.dao.MovieDao
 import com.feature.movie_list.domain.MovieRepository
 import com.myapp.network.data_source.MovieListRemoteDataSource
 import com.core.util.Resource
+import com.data.database.entity.MovieEntity
 import com.shared.movie.Movie
 import com.shared.movie.toMovie
 import com.shared.movie.toMovieEntity
@@ -36,6 +37,7 @@ class MovieRepositoryImpl @Inject constructor(
                 val remoteMovieList = movieListRemoteDataSource.getMovieList(input)
                 movieDao.deleteMovieList(cachedMovieList.map { it.toMovieEntity() })
                 movieDao.insertMovieList(remoteMovieList.toMovieEntityList())
+                movieDao.addFavoriteMoviesToMovieList()
 
                 val newCachedMovieList = movieDao.getAllMovies().map { it.toMovie() }
                 emit(Resource.Success(newCachedMovieList))
@@ -54,8 +56,18 @@ class MovieRepositoryImpl @Inject constructor(
             }
         }.flowOn(dispatcher)
 
-    suspend override fun getMovieListFromCache(): List<Movie> =
+    override suspend fun getMovieListFromCache(): List<Movie> =
         withContext(dispatcher) {
             movieDao.getAllMovies().toMovieList()
         }
+
+    override suspend fun toggleFavorite(movieId: Int, isFavorite: Boolean) {
+        withContext(dispatcher) {
+            if (isFavorite) {
+                movieDao.addToFavorite(movieId)
+            } else {
+                movieDao.removeFromFavorite(movieId)
+            }
+        }
+    }
 }
